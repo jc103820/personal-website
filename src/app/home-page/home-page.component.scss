@@ -1,0 +1,25 @@
+.home-page-base {
+    font-family: "Source Code Pro", monospace;
+    padding: 10%;
+}
+
+a {
+    text-decoration: none;
+    color: #515151;
+}
+
+a:hover, a:focus {
+    color: #d1d1d1;
+}
+
+.main {
+    font-family: 'Source Code Pro', monospace;
+    font-size: 20px;
+    line-height: 10px;
+    padding-top: 50px;
+    padding-left: 200px;
+    padding-right: 200px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 0px;
+}
