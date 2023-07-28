@@ -1,6 +1,5 @@
 .home-page-base {
     font-family: "Source Code Pro", monospace;
-    padding: 10%;
 }
 
 a {
@@ -14,12 +13,17 @@ a:hover, a:focus {
 
 .main {
     font-family: 'Source Code Pro', monospace;
-    font-size: 20px;
-    line-height: 10px;
-    padding-top: 50px;
-    padding-left: 200px;
-    padding-right: 200px;
+    padding-top: 5%;
+    padding-left: 10%;
+    padding-right: 10%;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 50% 50%;
     grid-gap: 0px;
+}
+
+.left {
+    font-size: 0.5rem;
+    font-size: 1.5lvw;
+    place-items: center;
+    padding-top: 20%;
 }
