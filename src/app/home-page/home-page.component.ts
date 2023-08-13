@@ -8,7 +8,7 @@ import { Component } from '@angular/core';
 export class HomePageComponent {
 
   onFlagClick():void {
-    alert("Eventually there will be minesweeper here, but as for now here is this alert.");
+    console.log("Banana")
   }
 
 }

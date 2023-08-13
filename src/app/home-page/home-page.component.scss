@@ -11,7 +11,7 @@ a:hover, a:focus {
     color: #d1d1d1;
 }
 
-.flag:hover, .flag:focus {
+.flag:hover{
     color: red;
 }
 
@@ -26,8 +26,18 @@ a:hover, a:focus {
 }
 
 .left {
-    font-size: 0.5rem;
     font-size: 1.5lvw;
     place-items: center;
     padding-top: 20%;
+}
+
+button, input[type="submit"], input[type="reset"] {
+    font-size: 2lvw;
+    text-decoration: none;
+    color: #515151;
+	background: none;
+	border: none;
+	padding: 0;
+	cursor: pointer;
+	outline: inherit;
 }
