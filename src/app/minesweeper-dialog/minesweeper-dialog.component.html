@@ -1,7 +1,15 @@
-<h1 mat-dialog-title>Minesweeper</h1>
-<div mat-dialog-content>
-  <table></table>
-</div>
-<div mat-dialog-actions>
-  <button mat-button mat-dialog-close>Exit</button>
+<div class="minesweeper-dialog">
+  <h1 mat-dialog-title>Minesweeper</h1>
+  <div mat-dialog-content>
+      <div class="grid" oncontextmenu="return false;">
+          <div *ngFor="let row of grid; let i = index" class="row">
+              <div *ngFor="let cell of grid[0]; let j = index" class="cell">
+                  <button>{{cell.content}}</button>
+              </div>
+          </div>
+      </div>
+  </div>
+  <div mat-dialog-actions>
+      <button mat-button mat-dialog-close>Exit</button>
+  </div>
 </div>
