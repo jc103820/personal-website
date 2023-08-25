@@ -4,7 +4,7 @@
     <div class="resetButtonDiv">
       <button class="reset" (click)="resetGrid()">{{resetButtonContent}}</button>
     </div>
-    <div class="bombCount">
+    <div *ngIf="showBombCount" class="bombCount">
       ⚑
       {{bombsLeft}}</div>
   </div>
