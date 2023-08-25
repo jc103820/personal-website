@@ -1,24 +1,26 @@
 <div class="minesweeper-dialog">
-  <h1 mat-dialog-title>Minesweeper</h1>
-  <div mat-dialog-content>
-      <div class="grid" oncontextmenu="return false;">
-          <div *ngFor="let row of grid; let i = index" class="row">
-              <div *ngFor="let cell of row; let j = index" [ngClass]="{'cell': !cell.isClickedMine, 'clicked-mine': cell.isClickedMine}">
-                  <button
-                  (click)="tryToRevealCell(i, j)"
-                  (contextmenu)="flagCell($event, i, j)"
-                  [ngClass]="{
-                    'untouched': !cell.isRevealed,
-                    'revealed': cell.isRevealed,
-                    'clicked-mine': cell.isClickedMine,
-                  }"
-                  [ngStyle]="{'color': cell.color}"
-                  >{{cell.content}}</button>
-              </div>
-          </div>
-      </div>
+  <div class="header">
+    <div class="timer">time</div>
+    <div class="resetButtonDiv">
+      <button class="reset" (click)="resetGrid()">{{resetButtonContent}}</button>
+    </div>
+    <div class="bombCount">bombCount</div>
   </div>
-  <div mat-dialog-actions>
-      <button mat-button mat-dialog-close>Exit</button>
+    <div class="grid" oncontextmenu="return false;">
+      <div *ngFor="let row of grid; let i = index" class="row">
+        <div *ngFor="let cell of row; let j = index" [ngClass]="{'cell': !cell.isClickedMine, 'clicked-mine': cell.isClickedMine}">
+          <button
+          (click)="tryToRevealCell(i, j)"
+          (contextmenu)="flagCell($event, i, j)"
+          [ngClass]="{
+            'untouched': !cell.isRevealed,
+            'revealed': cell.isRevealed,
+            'clicked-mine': cell.isClickedMine,
+            'flagged': cell.isFlagged,
+          }"
+          [ngStyle]="{'color': cell.color}"
+          >{{cell.content}}</button>
+        </div>
+      </div>
   </div>
 </div>

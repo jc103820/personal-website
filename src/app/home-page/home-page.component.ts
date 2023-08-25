@@ -13,7 +13,7 @@ export class HomePageComponent {
 
   onFlagClick(): void {
     const dialogRef = this.dialog.open(MinesweeperDialogComponent, {
-      width: '800px',
+      width: '820px',
     });
 
     dialogRef.afterClosed().subscribe(result => {

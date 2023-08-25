@@ -7,6 +7,7 @@ import { MatDialogRef } from '@angular/material/dialog';
   styleUrls: ['./minesweeper-dialog.component.scss'],
 })
 export class MinesweeperDialogComponent {
+  resetButtonContent: string = '☺';
   rows: number = 0;
   columns: number = 0;
   initialClick: boolean = true;
@@ -18,14 +19,14 @@ export class MinesweeperDialogComponent {
   }
 
   resetGrid(): void {
+    this.resetButtonContent = '☺';
     this.generateGrid();
     this.initialClick = true;
-    this.printGrid();
   }
 
   generateGrid(): void {
-    this.columns = 20;
-    this.rows = 10;
+    this.columns = 40;
+    this.rows = 15;
     this.grid = [];
     this.grid = new Array(this.columns);
 
@@ -39,7 +40,6 @@ export class MinesweeperDialogComponent {
 
   placeMines(column: number, row: number): void {
     const totalMines = ((this.rows * this.columns) / 5);
-    console.log(`Total Mines: ${totalMines}`);
     for (let i = 0; i < totalMines; i++) {
       const randomRow = Math.floor(Math.random() * this.rows);
       const randomCol = Math.floor(Math.random() * this.columns);
@@ -52,8 +52,6 @@ export class MinesweeperDialogComponent {
         this.updateAdjacentBombCounts(randomCol, randomRow);
       }
     }
-
-    this.printGrid();
   }
 
   updateAdjacentBombCounts(column: number, row: number):void {
@@ -64,7 +62,6 @@ export class MinesweeperDialogComponent {
         let inRowBounds = nextRow < this.rows && nextRow >= 0;
         let inColBounds = nextCol < this.columns && nextCol >= 0;
         if(inRowBounds && inColBounds) {
-          //console.log(`+1 bombs from ${row},${column} for ${nextRow},${nextCol} `)
           this.grid[nextCol][nextRow].numBombs++;
         }
       }
@@ -72,7 +69,6 @@ export class MinesweeperDialogComponent {
   }
 
   tryToRevealCell(column: number, row: number){
-    console.log(`Tried to reveal ${row}, ${column}`);
     if (this.grid[column][row].isRevealed) {
       this.revealSurroundingCells(column, row);
     } else {
@@ -82,7 +78,6 @@ export class MinesweeperDialogComponent {
 
   revealCell(column: number, row: number): void {
     if (this.grid[column][row].isFlagged) return;
-    console.log(`Revealed ${row}, ${column}`);
 
     if (this.initialClick){
       this.placeMines(column, row);
@@ -99,7 +94,6 @@ export class MinesweeperDialogComponent {
   }
 
   flagCell(event: MouseEvent, column: number, row: number): void {
-    console.log(`Flagged ${row}, ${column}`);
     if (this.grid[column][row].isRevealed) return;
 
     event.preventDefault();
@@ -133,7 +127,6 @@ export class MinesweeperDialogComponent {
     }
 
     if(numberOfFlags === this.grid[column][row].numBombs){
-      console.log(`Revealed surrounding of ${row}, ${column}`);
       for (let r = -1; r <= 1; r++) {
         for (let c = -1; c <= 1; c++) {
           let nextRow = row + r;
@@ -145,8 +138,6 @@ export class MinesweeperDialogComponent {
           }
         }
       }
-    } else {
-      console.log(`Failed to reveal surrounding of ${row}, ${column}`);
     }
   }
 
@@ -189,7 +180,6 @@ export class MinesweeperDialogComponent {
             let inRowBounds = nextRow < this.rows && nextRow >= 0;
             let inColBounds = nextCol < this.columns && nextCol >= 0;
             if(inRowBounds && inColBounds) {
-              //console.log(`${nextRow},${nextCol} revealed from ${cell.row},${cell.column}`)
               q.push(new Coordinate(nextRow, nextCol));
             }
           }
@@ -199,6 +189,7 @@ export class MinesweeperDialogComponent {
   }
 
   bombClick(column: number, row: number): void {
+    this.resetButtonContent = '☹';
     this.grid[column][row].isClickedMine = true;
     for (let i = 0; i < this.rows; i++) {
       for (let j = 0; j < this.columns; j++) {
@@ -209,11 +200,6 @@ export class MinesweeperDialogComponent {
         }
       }
     }
-
-    setTimeout(()=> {
-      this.resetGrid();
-    }, 2000);
-
   }
 
   textColor(numberOfBombs: number): string {
@@ -228,17 +214,6 @@ export class MinesweeperDialogComponent {
       case 8: return 'grey';
       default: return 'yellow';
     } 
-  }
-
-  printGrid(): void {
-    console.log("Grid:");
-    for (let i = 0; i < this.rows; i++) {
-      let rowString: string = `r${i}   `;
-      for (let j = 0; j < this.columns; j++) {
-        rowString = rowString.concat(` ${this.grid[j][i].numBombs}`);
-      }
-      console.log(rowString);
-    }
   }
 }
 
