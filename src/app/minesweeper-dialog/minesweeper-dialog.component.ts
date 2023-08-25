@@ -92,8 +92,7 @@ export class MinesweeperDialogComponent {
     this.grid[column][row].isRevealed = true;
 
     if (this.grid[column][row].isMine) {
-      alert("YOU CLICKED ON A BOMB!");
-      this.resetGrid();
+      this.bombClick(column, row);
     } else {
       this.searchNearbyCells(column, row);
     }
@@ -199,6 +198,24 @@ export class MinesweeperDialogComponent {
     }
   }
 
+  bombClick(column: number, row: number): void {
+    this.grid[column][row].isClickedMine = true;
+    for (let i = 0; i < this.rows; i++) {
+      for (let j = 0; j < this.columns; j++) {
+        if(this.grid[j][i].isMine){
+          this.grid[j][i].content = '💣';
+          this.grid[j][i].color = 'black';
+          this.grid[j][i].isRevealed = true;
+        }
+      }
+    }
+
+    setTimeout(()=> {
+      this.resetGrid();
+    }, 2000);
+
+  }
+
   textColor(numberOfBombs: number): string {
     switch(numberOfBombs) { 
       case 1: return 'blue';
@@ -228,6 +245,7 @@ export class MinesweeperDialogComponent {
 class Cell {
   content: string = "";
   isMine: boolean = false;
+  isClickedMine: boolean = false;
   isFlagged: boolean = false;
   isRevealed: boolean = false;
   numBombs: number = 0;
