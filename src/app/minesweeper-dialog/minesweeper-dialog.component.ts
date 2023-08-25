@@ -14,13 +14,19 @@ export class MinesweeperDialogComponent {
   grid: Cell[][] = [];
 
   constructor(public dialogRef: MatDialogRef<MinesweeperDialogComponent>) {
+    this.resetGrid();
+  }
+
+  resetGrid(): void {
     this.generateGrid();
+    this.initialClick = true;
     this.printGrid();
   }
 
   generateGrid(): void {
     this.columns = 20;
     this.rows = 10;
+    this.grid = [];
     this.grid = new Array(this.columns);
 
     for (let i = 0; i < this.columns; i++) {
@@ -65,8 +71,18 @@ export class MinesweeperDialogComponent {
     }
   }
 
-  revealCell(row: number, column: number): void {
+  tryToRevealCell(column: number, row: number){
+    console.log(`Tried to reveal ${row}, ${column}`);
+    if (this.grid[column][row].isRevealed) {
+      this.revealSurroundingCells(column, row);
+    } else {
+      this.revealCell(column, row);
+    }
+  }
+
+  revealCell(column: number, row: number): void {
     if (this.grid[column][row].isFlagged) return;
+    console.log(`Revealed ${row}, ${column}`);
 
     if (this.initialClick){
       this.placeMines(column, row);
@@ -76,10 +92,62 @@ export class MinesweeperDialogComponent {
     this.grid[column][row].isRevealed = true;
 
     if (this.grid[column][row].isMine) {
-      alert("YOU CLICKED ON A BOMB");
-      this.generateGrid();
+      alert("YOU CLICKED ON A BOMB!");
+      this.resetGrid();
     } else {
       this.searchNearbyCells(column, row);
+    }
+  }
+
+  flagCell(event: MouseEvent, column: number, row: number): void {
+    console.log(`Flagged ${row}, ${column}`);
+    if (this.grid[column][row].isRevealed) return;
+
+    event.preventDefault();
+
+    if (this.grid[column][row].isFlagged) {
+      this.grid[column][row].content = "";
+      this.grid[column][row].isFlagged = false;
+      this.grid[column][row].color = this.textColor(this.grid[column][row].numBombs);
+    } else {
+      if (this.grid[column][row].isRevealed === false){
+        this.grid[column][row].content = "⚑";
+        this.grid[column][row].color = "red";
+        this.grid[column][row].isFlagged = true;
+      }
+    }
+  }
+
+  revealSurroundingCells(column: number, row: number): void {
+    let numberOfFlags: number = 0;
+
+    for (let r = -1; r <= 1; r++) {
+      for (let c = -1; c <= 1; c++) {
+        let nextRow = row + r;
+        let nextCol = column + c;
+        let inRowBounds = nextRow < this.rows && nextRow >= 0;
+        let inColBounds = nextCol < this.columns && nextCol >= 0;
+        if(inRowBounds && inColBounds) {
+          if(this.grid[nextCol][nextRow].isFlagged) numberOfFlags++;
+        }
+      }
+    }
+
+    if(numberOfFlags === this.grid[column][row].numBombs){
+      console.log(`Revealed surrounding of ${row}, ${column}`);
+      for (let r = -1; r <= 1; r++) {
+        for (let c = -1; c <= 1; c++) {
+          let nextRow = row + r;
+          let nextCol = column + c;
+          let inRowBounds = nextRow < this.rows && nextRow >= 0;
+          let inColBounds = nextCol < this.columns && nextCol >= 0;
+          if(inRowBounds && inColBounds) {
+            this.revealCell(nextCol, nextRow);
+          }
+        }
+      }
+    } else {
+      console.log(`Failed to reveal surrounding of ${row}, ${column}`);
     }
   }
 

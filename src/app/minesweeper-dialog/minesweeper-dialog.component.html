@@ -5,7 +5,8 @@
           <div *ngFor="let row of grid; let i = index" class="row">
               <div *ngFor="let cell of row; let j = index" class="cell">
                   <button
-                  (click)="revealCell(j, i)"
+                  (click)="tryToRevealCell(i, j)"
+                  (contextmenu)="flagCell($event, i, j)"
                   [ngClass]="{
                     'untouched': !cell.isRevealed,
                     'revealed': cell.isRevealed,
