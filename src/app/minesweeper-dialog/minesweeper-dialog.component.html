@@ -1,10 +1,12 @@
 <div class="minesweeper-dialog">
   <div class="header">
-    <div class="timer">time</div>
+    <div class="timer"></div>
     <div class="resetButtonDiv">
       <button class="reset" (click)="resetGrid()">{{resetButtonContent}}</button>
     </div>
-    <div class="bombCount">bombCount</div>
+    <div class="bombCount">
+      ⚑
+      {{bombsLeft}}</div>
   </div>
     <div class="grid" oncontextmenu="return false;">
       <div *ngFor="let row of grid; let i = index" class="row">

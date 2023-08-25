@@ -11,6 +11,7 @@ export class MinesweeperDialogComponent {
   rows: number = 0;
   columns: number = 0;
   initialClick: boolean = true;
+  bombsLeft: number = 0;
 
   grid: Cell[][] = [];
 
@@ -52,6 +53,7 @@ export class MinesweeperDialogComponent {
         this.updateAdjacentBombCounts(randomCol, randomRow);
       }
     }
+    this.bombsLeft = totalMines;
   }
 
   updateAdjacentBombCounts(column: number, row: number):void {
@@ -102,11 +104,13 @@ export class MinesweeperDialogComponent {
       this.grid[column][row].content = "";
       this.grid[column][row].isFlagged = false;
       this.grid[column][row].color = this.textColor(this.grid[column][row].numBombs);
+      this.bombsLeft++;
     } else {
       if (this.grid[column][row].isRevealed === false){
         this.grid[column][row].content = "⚑";
         this.grid[column][row].color = "red";
         this.grid[column][row].isFlagged = true;
+        this.bombsLeft--;
       }
     }
   }
