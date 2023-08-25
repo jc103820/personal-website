@@ -106,6 +106,7 @@ export class MinesweeperDialogComponent {
       if (this.grid[cell.column][cell.row].numBombs > 0) {
         this.grid[cell.column][cell.row].isRevealed = true;
         this.grid[cell.column][cell.row].content = this.grid[cell.column][cell.row].numBombs.toString();
+        this.grid[cell.column][cell.row].color = this.textColor(this.grid[cell.column][cell.row].numBombs);
       }
 
 
@@ -121,13 +122,27 @@ export class MinesweeperDialogComponent {
             let inRowBounds = nextRow < this.rows && nextRow >= 0;
             let inColBounds = nextCol < this.columns && nextCol >= 0;
             if(inRowBounds && inColBounds) {
-              console.log(`${nextRow},${nextCol} revealed from ${cell.row},${cell.column}`)
+              //console.log(`${nextRow},${nextCol} revealed from ${cell.row},${cell.column}`)
               q.push(new Coordinate(nextRow, nextCol));
             }
           }
         }
       }
     }
+  }
+
+  textColor(numberOfBombs: number): string {
+    switch(numberOfBombs) { 
+      case 1: return 'blue';
+      case 2: return 'green';
+      case 3: return 'red';
+      case 4: return 'darkblue';
+      case 5: return 'darkred';
+      case 6: return 'cyan';
+      case 7: return 'black';
+      case 8: return 'grey';
+      default: return 'yellow';
+    } 
   }
 
   printGrid(): void {

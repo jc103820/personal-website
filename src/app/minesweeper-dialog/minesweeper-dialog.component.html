@@ -10,6 +10,7 @@
                     'untouched': !cell.isRevealed,
                     'revealed': cell.isRevealed,
                   }"
+                  [ngStyle]="{'color': cell.color}"
                   >{{cell.content}}</button>
               </div>
           </div>
