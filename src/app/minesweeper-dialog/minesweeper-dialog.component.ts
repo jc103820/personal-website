@@ -65,9 +65,68 @@ export class MinesweeperDialogComponent {
     }
   }
 
-  revealCell(column: number, row: number): void {
-    if(this.initialClick){
+  revealCell(row: number, column: number): void {
+    if (this.grid[column][row].isFlagged) return;
+
+    if (this.initialClick){
       this.placeMines(column, row);
+      this.initialClick = false;
+    }
+
+    this.grid[column][row].isRevealed = true;
+
+    if (this.grid[column][row].isMine) {
+      alert("YOU CLICKED ON A BOMB");
+      this.generateGrid();
+    } else {
+      this.searchNearbyCells(column, row);
+    }
+  }
+
+  async searchNearbyCells(col: number, row: number): Promise<void> {
+    const visited: boolean[][] = new Array(this.columns);
+
+    for (let i = 0; i < this.columns; i++) {
+      visited[i] = new Array(this.rows);
+      for (let j = 0; j < this.rows; j++) {
+        visited[i][j] = false;
+      }
+    }
+
+    let q: Coordinate[] = [new Coordinate(row, col)];
+
+    // Breadth first search
+    while(!(q.length === 0)) {;
+      let cell: any = q.pop()
+
+      if(visited[cell.column][cell.row]) continue;
+
+      visited[cell.column][cell.row] = true;
+
+      if (this.grid[cell.column][cell.row].numBombs > 0) {
+        this.grid[cell.column][cell.row].isRevealed = true;
+        this.grid[cell.column][cell.row].content = this.grid[cell.column][cell.row].numBombs.toString();
+      }
+
+
+      if (this.grid[cell.column][cell.row].numBombs === 0) {
+        this.grid[cell.column][cell.row].isRevealed = true;
+        this.grid[cell.column][cell.row].content = "";
+
+        // Reveal surrounding cells
+        for (let r = -1; r <= 1; r++) {
+          for (let c = -1; c <= 1; c++) {
+            let nextRow = cell.row + r;
+            let nextCol = cell.column + c;
+            let inRowBounds = nextRow < this.rows && nextRow >= 0;
+            let inColBounds = nextCol < this.columns && nextCol >= 0;
+            if(inRowBounds && inColBounds) {
+              console.log(`${nextRow},${nextCol} revealed from ${cell.row},${cell.column}`)
+              q.push(new Coordinate(nextRow, nextCol));
+            }
+          }
+        }
+      }
     }
   }
 
@@ -84,7 +143,7 @@ export class MinesweeperDialogComponent {
 }
 
 class Cell {
-  content: string = "*";
+  content: string = "";
   isMine: boolean = false;
   isFlagged: boolean = false;
   isRevealed: boolean = false;
@@ -92,4 +151,13 @@ class Cell {
   color: string = "green";
 
   constructor() {}
+}
+
+class Coordinate {
+  row: number = 0;
+  column: number = 0;
+  constructor (row:number, column: number) {
+    this.row = row;
+    this.column = column;
+  }
 }

@@ -6,7 +6,11 @@
               <div *ngFor="let cell of row; let j = index" class="cell">
                   <button
                   (click)="revealCell(j, i)"
-                  >{{cell.numBombs}}</button>
+                  [ngClass]="{
+                    'untouched': !cell.isRevealed,
+                    'revealed': cell.isRevealed,
+                  }"
+                  >{{cell.content}}</button>
               </div>
           </div>
       </div>

@@ -24,3 +24,32 @@ h1 {
         background-color: transparent;
     }
 }
+
+button.untouched {
+    border-top: 4px solid white;
+    border-left: 4px solid white;
+    border-bottom: 4px solid darkgray;
+    border-right: 4px solid darkgray;
+    background-color: blue;
+}
+
+button.revealed {
+    border: 1px solid darkgray;
+    background-color: green;
+    font-weight: 800;
+}
+
+.revealed {
+    color: purple;
+    background-color: aqua;
+}
+  
+.mine {
+    color: #3e0df0;
+    font-weight: bold;
+}
+
+.flagged {
+    color: rgb(255, 0, 0);
+    font-weight: bold;
+}
