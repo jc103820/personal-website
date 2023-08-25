@@ -92,9 +92,12 @@ export class MinesweeperDialogComponent {
       this.initialClick = false;
     }
 
+    if (!this.grid[column][row].isRevealed) {
+      this.cellsRevealed++;
+      if(this.cellsRevealed === this.safeCells){}
+    }
+
     this.grid[column][row].isRevealed = true;
-    this.cellsRevealed++;
-    if(this.cellsRevealed === this.safeCells) this.winGame();
 
     if (this.grid[column][row].isMine) {
       this.bombClick(column, row);
@@ -174,20 +177,24 @@ export class MinesweeperDialogComponent {
       visited[cell.column][cell.row] = true;
 
       if (this.grid[cell.column][cell.row].numBombs > 0) {
+        if (!this.grid[cell.column][cell.row].isRevealed) {
+          this.cellsRevealed++;
+          if(this.cellsRevealed === this.safeCells) {}
+        }
         this.grid[cell.column][cell.row].isRevealed = true;
         this.grid[cell.column][cell.row].content = this.grid[cell.column][cell.row].numBombs.toString();
         this.grid[cell.column][cell.row].color = this.textColor(this.grid[cell.column][cell.row].numBombs);
-        this.cellsRevealed++;
-        if(this.cellsRevealed === this.safeCells) this.winGame();
       }
 
 
       if (this.grid[cell.column][cell.row].numBombs === 0) {
+        if (!this.grid[cell.column][cell.row].isRevealed) {
+          this.cellsRevealed++;
+          if(this.cellsRevealed === this.safeCells) {}
+        }
+
         this.grid[cell.column][cell.row].isRevealed = true;
         this.grid[cell.column][cell.row].content = "";
-        this.cellsRevealed++;
-
-        if(this.cellsRevealed === this.safeCells) this.winGame();
 
         // Reveal surrounding cells
         for (let r = -1; r <= 1; r++) {
